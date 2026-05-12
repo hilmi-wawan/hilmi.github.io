@@ -1,0 +1,1144 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dokumentasi REST API Sekolah</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #4f46e5;
+            --primary-light: #e0e7ff;
+            --secondary: #7c3aed;
+            --accent: #06b6d4;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --dark: #1f2937;
+            --light: #f9fafb;
+            --gray: #6b7280;
+            --gray-light: #e5e7eb;
+            --gray-lighter: #f3f4f6;
+            --border-radius: 12px;
+            --border-radius-sm: 8px;
+            --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.1);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            --transition: all 0.2s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc;
+            color: var(--dark);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            padding: 4rem 0;
+            margin-bottom: 3rem;
+            border-radius: 0 0 var(--border-radius) var(--border-radius);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+        }
+
+        .header-content {
+            position: relative;
+            z-index: 1;
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: center;
+            padding: 0 20px;
+        }
+
+        .header-icon {
+            background: rgba(255, 255, 255, 0.2);
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 2rem;
+            font-size: 2.5rem;
+            backdrop-filter: blur(10px);
+        }
+
+        .header h1 {
+            font-size: 2.8rem;
+            margin-bottom: 1rem;
+            font-weight: 700;
+        }
+
+        .header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            margin-bottom: 2rem;
+        }
+
+        .badge-container {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .badge {
+            background: rgba(255, 255, 255, 0.15);
+            padding: 0.5rem 1.25rem;
+            border-radius: 50px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            backdrop-filter: blur(10px);
+        }
+
+        /* Layout */
+        .app-layout {
+            display: grid;
+            grid-template-columns: 280px 1fr;
+            gap: 2.5rem;
+            margin-bottom: 3rem;
+        }
+
+        @media (max-width: 1024px) {
+            .app-layout {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Sidebar */
+        .sidebar {
+            background: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow-md);
+            padding: 1.5rem;
+            height: fit-content;
+            position: sticky;
+            top: 2rem;
+        }
+
+        .sidebar-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            color: var(--dark);
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .nav-menu {
+            list-style: none;
+        }
+
+        .nav-item {
+            margin-bottom: 0.5rem;
+        }
+
+        .nav-link {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.875rem 1rem;
+            color: var(--gray);
+            text-decoration: none;
+            border-radius: var(--border-radius-sm);
+            transition: var(--transition);
+            font-weight: 500;
+            position: relative;
+        }
+
+        .nav-link:hover {
+            background-color: var(--gray-lighter);
+            color: var(--primary);
+        }
+
+        .nav-link.active {
+            background-color: var(--primary-light);
+            color: var(--primary);
+            font-weight: 600;
+        }
+
+        .nav-link.active::before {
+            content: "";
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            background-color: var(--primary);
+            border-radius: 0 var(--border-radius-sm) var(--border-radius-sm) 0;
+        }
+
+        .nav-icon {
+            width: 20px;
+            text-align: center;
+        }
+
+        /* Content */
+        .content {
+            display: flex;
+            flex-direction: column;
+            gap: 2.5rem;
+        }
+
+        /* Section Cards */
+        .section-card {
+            background: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow-md);
+            overflow: hidden;
+            transition: var(--transition);
+        }
+
+        .section-card:hover {
+            box-shadow: var(--shadow-lg);
+        }
+
+        .section-header {
+            padding: 2rem 2rem 1rem;
+            background-color: var(--light);
+            border-bottom: 1px solid var(--gray-light);
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--dark);
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .section-subtitle {
+            color: var(--gray);
+            font-size: 1rem;
+            margin-top: 0.5rem;
+        }
+
+        .section-content {
+            padding: 2rem;
+        }
+
+        /* Method Cards */
+        .method-card {
+            border-radius: var(--border-radius-sm);
+            padding: 1.75rem;
+            margin-bottom: 1.75rem;
+            background: white;
+            border: 1px solid var(--gray-light);
+            transition: var(--transition);
+        }
+
+        .method-card:hover {
+            border-color: var(--primary);
+            box-shadow: var(--shadow-md);
+        }
+
+        .method-header {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1.25rem;
+            border-bottom: 1px solid var(--gray-light);
+        }
+
+        .method-tag {
+            font-weight: 700;
+            padding: 0.5rem 1rem;
+            border-radius: var(--border-radius-sm);
+            color: white;
+            font-size: 0.85rem;
+            letter-spacing: 0.5px;
+            min-width: 80px;
+            text-align: center;
+            text-transform: uppercase;
+        }
+
+        .method-tag.get {
+            background-color: var(--success);
+        }
+
+        .method-tag.post {
+            background-color: var(--accent);
+        }
+
+        .method-tag.put {
+            background-color: var(--warning);
+        }
+
+        .method-tag.delete {
+            background-color: var(--danger);
+        }
+
+        .endpoint {
+            font-family: 'Courier New', monospace;
+            font-size: 1.05rem;
+            color: var(--dark);
+            font-weight: 600;
+            background: var(--gray-lighter);
+            padding: 0.75rem 1.25rem;
+            border-radius: var(--border-radius-sm);
+            flex-grow: 1;
+            border: 1px solid var(--gray-light);
+            overflow-x: auto;
+        }
+
+        .method-description {
+            color: var(--gray);
+            line-height: 1.8;
+            margin-bottom: 1.5rem;
+        }
+
+        .method-description strong {
+            color: var(--dark);
+        }
+
+        /* Info Cards */
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 1.25rem;
+            margin: 1.5rem 0;
+        }
+
+        .info-card {
+            background: white;
+            border-radius: var(--border-radius-sm);
+            padding: 1.5rem;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--gray-light);
+            transition: var(--transition);
+        }
+
+        .info-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .info-card-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .info-card-icon.primary {
+            background-color: var(--primary-light);
+            color: var(--primary);
+        }
+
+        .info-card-icon.success {
+            background-color: #d1fae5;
+            color: var(--success);
+        }
+
+        .info-card-icon.warning {
+            background-color: #fef3c7;
+            color: var(--warning);
+        }
+
+        .info-card-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--dark);
+        }
+
+        /* Screenshot */
+        .screenshot-container {
+            margin: 1.5rem 0;
+            padding: 1.25rem;
+            background: var(--gray-lighter);
+            border-radius: var(--border-radius-sm);
+            text-align: center;
+            border: 1px dashed var(--gray-light);
+        }
+
+        .screenshot-container img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--gray-light);
+        }
+
+        .screenshot-caption {
+            color: var(--gray);
+            font-size: 0.9rem;
+            margin-top: 1rem;
+            font-style: italic;
+        }
+
+        /* Code Blocks */
+        .code-block {
+            background: #1e293b;
+            color: #e2e8f0;
+            padding: 1.5rem;
+            border-radius: var(--border-radius-sm);
+            overflow-x: auto;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+            line-height: 1.5;
+            margin-top: 1rem;
+            border: 1px solid #334155;
+        }
+
+        .code-header {
+            color: #94a3b8;
+            font-size: 0.85rem;
+            margin-bottom: 0.75rem;
+            font-family: 'Inter', sans-serif;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        /* Tips Section */
+        .tips-section {
+            background: linear-gradient(135deg, #f0fdfa 0%, #ccfbf1 100%);
+            border-left: 4px solid var(--success);
+        }
+
+        .tips-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.25rem;
+        }
+
+        .tip-item {
+            background: white;
+            padding: 1.5rem;
+            border-radius: var(--border-radius-sm);
+            box-shadow: var(--shadow-sm);
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+            transition: var(--transition);
+        }
+
+        .tip-item:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .tip-icon {
+            color: var(--success);
+            font-size: 1.2rem;
+            margin-top: 0.2rem;
+        }
+
+        /* Alert */
+        .alert {
+            padding: 1.25rem;
+            border-radius: var(--border-radius-sm);
+            margin: 1.5rem 0;
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+        }
+
+        .alert.warning {
+            background-color: #fef3c7;
+            border-left: 4px solid var(--warning);
+            color: #92400e;
+        }
+
+        .alert.info {
+            background-color: #dbeafe;
+            border-left: 4px solid var(--primary);
+            color: #1e40af;
+        }
+
+        .alert-icon {
+            font-size: 1.25rem;
+        }
+
+        /* Footer */
+        .footer {
+            background: var(--dark);
+            color: white;
+            padding: 3rem 0;
+            margin-top: 4rem;
+            border-radius: var(--border-radius) var(--border-radius) 0 0;
+        }
+
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 2rem;
+        }
+
+        .footer-info {
+            flex: 1;
+            min-width: 300px;
+        }
+
+        .footer-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .footer-text {
+            color: #d1d5db;
+            line-height: 1.7;
+        }
+
+        .footer-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .meta-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: #9ca3af;
+            font-size: 0.9rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header {
+                padding: 3rem 0;
+            }
+
+            .header h1 {
+                font-size: 2.2rem;
+            }
+
+            .header p {
+                font-size: 1.1rem;
+            }
+
+            .section-header,
+            .section-content {
+                padding: 1.5rem;
+            }
+
+            .method-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .endpoint {
+                width: 100%;
+                font-size: 0.95rem;
+            }
+
+            .tips-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .animate-in {
+            animation: fadeInUp 0.6s ease-out forwards;
+            opacity: 0;
+        }
+
+        .delay-1 { animation-delay: 0.1s; }
+        .delay-2 { animation-delay: 0.2s; }
+        .delay-3 { animation-delay: 0.3s; }
+        .delay-4 { animation-delay: 0.4s; }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <div class="header-icon">
+                    <i class="fas fa-graduation-cap"></i>
+                </div>
+                <h1>Dokumentasi REST API Sekolah</h1>
+                <p>Panduan lengkap untuk mengintegrasikan dan menggunakan REST API sistem manajemen data sekolah. API ini menyediakan akses aman dan terstruktur untuk mengelola data akademik.</p>
+                
+                <div class="badge-container">
+                    <div class="badge">
+                        <i class="fas fa-shield-alt"></i>
+                        <span>API Key Authentication</span>
+                    </div>
+                    <div class="badge">
+                        <i class="fas fa-bolt"></i>
+                        <span>RESTful Architecture</span>
+                    </div>
+                    <div class="badge">
+                        <i class="fas fa-database"></i>
+                        <span>CRUD Operations</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="app-layout">
+            <!-- Sidebar Navigation -->
+            <aside class="sidebar animate-in">
+                <h2 class="sidebar-title"><i class="fas fa-bars"></i> Navigasi</h2>
+                <ul class="nav-menu">
+                    <li class="nav-item">
+                        <a href="#konsep-umum" class="nav-link active">
+                            <span class="nav-icon"><i class="fas fa-home"></i></span>
+                            <span>Konsep Umum</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#authentication" class="nav-link">
+                            <span class="nav-icon"><i class="fas fa-key"></i></span>
+                            <span>Autentikasi</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#get-method" class="nav-link">
+                            <span class="nav-icon"><i class="fas fa-download"></i></span>
+                            <span>GET - Mengambil Data</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#post-method" class="nav-link">
+                            <span class="nav-icon"><i class="fas fa-plus-circle"></i></span>
+                            <span>POST - Menambah Data</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#put-method" class="nav-link">
+                            <span class="nav-icon"><i class="fas fa-edit"></i></span>
+                            <span>PUT - Mengubah Data</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#delete-method" class="nav-link">
+                            <span class="nav-icon"><i class="fas fa-trash-alt"></i></span>
+                            <span>DELETE - Menghapus Data</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#panduan" class="nav-link">
+                            <span class="nav-icon"><i class="fas fa-lightbulb"></i></span>
+                            <span>Panduan & Tips</span>
+                        </a>
+                    </li>
+                </ul>
+            </aside>
+
+            <!-- Main Content -->
+            <main class="content">
+                <!-- Konsep Umum -->
+                <section id="konsep-umum" class="section-card animate-in delay-1">
+                    <div class="section-header">
+                        <h2 class="section-title"><i class="fas fa-brain"></i> Konsep REST API</h2>
+                        <p class="section-subtitle">Memahami arsitektur dan prinsip dasar REST API</p>
+                    </div>
+                    <div class="section-content">
+                        <p><strong>REST API (Representational State Transfer Application Programming Interface)</strong> adalah gaya arsitektur yang menggunakan protokol HTTP untuk komunikasi antara klien dan server. API ini mengikuti prinsip-prinsip REST yang memungkinkan operasi CRUD (Create, Read, Update, Delete) pada data.</p>
+                        
+                        <div class="alert info">
+                            <i class="fas fa-info-circle alert-icon"></i>
+                            <div>
+                                <strong>Analogi REST API:</strong> Bayangkan REST API sebagai pelayan di restoran. Anda (klien) memberikan pesanan (request) kepada pelayan, pelayan menyampaikannya ke dapur (server), dan kemudian mengembalikan makanan yang dipesan (response).
+                            </div>
+                        </div>
+                        
+                        <h3 style="margin: 1.5rem 0 1rem; color: var(--dark);">Keunggulan REST API:</h3>
+                        
+                        <div class="info-grid">
+                            <div class="info-card">
+                                <div class="info-card-icon primary">
+                                    <i class="fas fa-layer-group"></i>
+                                </div>
+                                <h4 class="info-card-title">Separasi Frontend & Backend</h4>
+                                <p>Memisahkan tampilan aplikasi dari logika bisnis dan database, memungkinkan pengembangan paralel.</p>
+                            </div>
+                            <div class="info-card">
+                                <div class="info-card-icon success">
+                                    <i class="fas fa-mobile-alt"></i>
+                                </div>
+                                <h4 class="info-card-title">Multi-Platform</h4>
+                                <p>Dapat diakses dari berbagai platform: web, aplikasi mobile, desktop, atau perangkat IoT.</p>
+                            </div>
+                            <div class="info-card">
+                                <div class="info-card-icon warning">
+                                    <i class="fas fa-expand-arrows-alt"></i>
+                                </div>
+                                <h4 class="info-card-title">Skalabilitas</h4>
+                                <p>Mudah dikembangkan, diuji, dan dipelihara seiring pertumbuhan aplikasi.</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Authentication -->
+                <section id="authentication" class="section-card animate-in delay-2">
+                    <div class="section-header">
+                        <h2 class="section-title"><i class="fas fa-user-shield"></i> Autentikasi API</h2>
+                        <p class="section-subtitle">Mengamankan akses data dengan API Key</p>
+                    </div>
+                    <div class="section-content">
+                        <p>Untuk mengakses API ini, Anda memerlukan API Key yang valid. API Key berfungsi sebagai token otorisasi yang memberikan izin akses ke endpoint yang tersedia.</p>
+                        
+                        <div class="info-grid">
+                            <div class="info-card">
+                                <div class="info-card-icon primary">
+                                    <i class="fas fa-sign-in-alt"></i>
+                                </div>
+                                <h4 class="info-card-title">Langkah 1: Login</h4>
+                                <p>Gunakan username dan password yang valid untuk mendapatkan API Key melalui endpoint auth.</p>
+                            </div>
+                            <div class="info-card">
+                                <div class="info-card-icon success">
+                                    <i class="fas fa-key"></i>
+                                </div>
+                                <h4 class="info-card-title">Langkah 2: Dapatkan API Key</h4>
+                                <p>Sistem akan mengembalikan API Key unik yang berlaku untuk sesi Anda.</p>
+                            </div>
+                            <div class="info-card">
+                                <div class="info-card-icon warning">
+                                    <i class="fas fa-paper-plane"></i>
+                                </div>
+                                <h4 class="info-card-title">Langkah 3: Gunakan API Key</h4>
+                                <p>Sertakan API Key di header setiap request ke API untuk otorisasi.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="alert warning">
+                            <i class="fas fa-exclamation-triangle alert-icon"></i>
+                            <div>
+                                <strong>Keamanan API Key:</strong> Simpan API Key dengan aman dan jangan bagikan kepada pihak yang tidak berwenang. API Key memberikan akses penuh ke data sistem.
+                            </div>
+                        </div>
+                        
+                        <h3 style="margin: 1.5rem 0 1rem; color: var(--dark);">Format Header Request:</h3>
+                        
+                        <div class="code-block">
+                            <div class="code-header"><i class="fas fa-code"></i> Header Request:</div>
+GET /api/kelas HTTP/1.1
+Host: 103.186.167.18:8000
+x-api-key: 140291690063
+Content-Type: application/json
+                        </div>
+                    </div>
+                </section>
+
+                <!-- GET Method -->
+                <section id="get-method" class="section-card animate-in">
+                    <div class="section-header">
+                        <h2 class="section-title"><i class="fas fa-download"></i> GET - Mengambil Data</h2>
+                        <p class="section-subtitle">Membaca data dari server tanpa perubahan</p>
+                    </div>
+                    <div class="section-content">
+                        <div class="method-card">
+                            <div class="method-header">
+                                <span class="method-tag get">GET</span>
+                                <span class="endpoint">http://103.186.167.18:8000/serverapikel5rpl1key/api/kelas</span>
+                            </div>
+                            <p class="method-description">
+                                <strong>Fungsi:</strong> Mengambil seluruh data kelas yang ada dalam database.<br>
+                                <strong>Penggunaan:</strong> Saat perlu melihat daftar semua kelas yang tersedia di sekolah atau untuk keperluan dropdown selection di aplikasi.
+                            </p>
+
+                            <div class="screenshot-container">
+                                <img src="images/GET.jpeg" alt="Testing GET Method">
+                                <p class="screenshot-caption">Testing GET method untuk mengambil data kelas</p>
+                            </div>
+
+                            <div class="code-block">
+                                <div class="code-header"><i class="fas fa-reply"></i> Response (200 OK):</div>
+[
+  {
+    "id": 1,
+    "nama_kelas": "XI IPA 4",
+    "tingkat": "X"
+  },
+  {
+    "id": 2,
+    "nama_kelas": "XI IPS 1",
+    "tingkat": "X"
+  },
+  {
+    "id": 3,
+    "nama_kelas": "XI IPS 1",
+    "tingkat": "11"
+  }
+]
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- POST Method -->
+                <section id="post-method" class="section-card animate-in">
+                    <div class="section-header">
+                        <h2 class="section-title"><i class="fas fa-plus-circle"></i> POST - Menambah Data</h2>
+                        <p class="section-subtitle">Menambahkan data baru ke dalam sistem</p>
+                    </div>
+                    <div class="section-content">
+                        <div class="method-card">
+                            <div class="method-header">
+                                <span class="method-tag post">POST</span>
+                                <span class="endpoint">http://103.186.167.18:8000/serverapikel5rpl1key/api/guru</span>
+                            </div>
+                            <p class="method-description">
+                                <strong>Fungsi:</strong> Menambahkan data guru baru ke dalam database.<br>
+                                <strong>Penggunaan:</strong> Saat sekolah merekrut guru baru yang perlu dimasukkan ke sistem atau ketika ada penambahan staf pengajar.
+                            </p>
+
+                            <div class="screenshot-container">
+                                <img src="images/POST.jpeg" alt="Testing POST Method">
+                                <p class="screenshot-caption">Testing POST method untuk menambah data guru</p>
+                            </div>
+
+                            <div class="code-block">
+                                <div class="code-header"><i class="fas fa-paper-plane"></i> Request Body:</div>
+{
+  "id": 5,
+  "nip": 1005,
+  "nama": "Angel",
+  "mapel": "Sejarah"
+}
+
+                                <div class="code-header" style="margin-top:1rem;"><i class="fas fa-reply"></i> Response:</div>
+{
+  "message": "Guru berhasil ditambahkan",
+  "data": {
+    "id": 5,
+    "nip": 1005,
+    "nama": "Angel",
+    "mapel": "Sejarah"
+  }
+}
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- PUT Method -->
+                <section id="put-method" class="section-card animate-in">
+                    <div class="section-header">
+                        <h2 class="section-title"><i class="fas fa-edit"></i> PUT - Mengubah Data</h2>
+                        <p class="section-subtitle">Memperbarui data yang sudah ada</p>
+                    </div>
+                    <div class="section-content">
+                        <div class="method-card">
+                            <div class="method-header">
+                                <span class="method-tag put">PUT</span>
+                                <span class="endpoint">http://103.186.167.18:8000/serverapikel5rpl1key/api/siswa/1</span>
+                            </div>
+                            <p class="method-description">
+                                <strong>Fungsi:</strong> Mengubah data siswa yang sudah ada berdasarkan ID.<br>
+                                <strong>Penggunaan:</strong> Saat ada perubahan data siswa seperti pindah alamat, perubahan nomor telepon, naik kelas, atau koreksi data yang salah.
+                            </p>
+
+                            <div class="screenshot-container">
+                                <img src="images/PUT.jpeg" alt="Testing PUT Method">
+                                <p class="screenshot-caption">Testing PUT method untuk mengubah data siswa</p>
+                            </div>
+
+                            <div class="code-block">
+                                <div class="code-header"><i class="fas fa-paper-plane"></i> Request Body:</div>
+{
+  "nis": "202501",
+  "nama": "Linda Lingling",
+  "jenis_kelamin": "P",
+  "alamat": "Jl. Merpati No.1",
+  "kelas_id": 2,
+  "nama_kelas": "X IPS 1"
+}
+
+                                <div class="code-header" style="margin-top:1rem;"><i class="fas fa-reply"></i> Response:</div>
+{
+  "message": "Data siswa berhasil diperbarui",
+  "data": {
+    "id": 1,
+    "nis": "202501",
+    "nama": "Linda Lingling",
+    "jenis_kelamin": "P",
+    "alamat": "Jl. Merpati No.1",
+    "kelas_id": 2,
+    "nama_kelas": "X IPS 1"
+  }
+}
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- DELETE Method -->
+                <section id="delete-method" class="section-card animate-in">
+                    <div class="section-header">
+                        <h2 class="section-title"><i class="fas fa-trash-alt"></i> DELETE - Menghapus Data</h2>
+                        <p class="section-subtitle">Menghapus data dari sistem secara permanen</p>
+                    </div>
+                    <div class="section-content">
+                        <div class="method-card">
+                            <div class="method-header">
+                                <span class="method-tag delete">DELETE</span>
+                                <span class="endpoint">http://103.186.167.18:8000/serverapikel5rpl1key/api/kelas/1</span>
+                            </div>
+                            <p class="method-description">
+                                <strong>Fungsi:</strong> Menghapus data kelas dari database berdasarkan ID.<br>
+                                <strong>Penggunaan:</strong> Saat kelas tidak digunakan lagi, perlu direstrukturisasi, atau terdapat duplikasi data.<br>
+                            </p>
+                            
+                            <div class="alert warning">
+                                <i class="fas fa-exclamation-triangle alert-icon"></i>
+                                <div>
+                                    <strong>Peringatan:</strong> Pastikan tidak ada siswa yang terdaftar di kelas tersebut sebelum menghapus. Operasi DELETE bersifat permanen dan data tidak dapat dikembalikan.
+                                </div>
+                            </div>
+
+                            <div class="screenshot-container">
+                                <img src="images/DELETE.jpeg" alt="Testing DELETE Method">
+                                <p class="screenshot-caption">Testing DELETE method untuk menghapus data kelas</p>
+                            </div>
+
+                            <div class="code-block">
+                                <div class="code-header"><i class="fas fa-reply"></i> Response (200 OK):</div>
+{
+  "message": "Kelas berhasil dihapus"
+}
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Tips Section -->
+                <section id="panduan" class="section-card tips-section animate-in delay-3">
+                    <div class="section-header">
+                        <h2 class="section-title"><i class="fas fa-lightbulb"></i> Panduan & Tips Penggunaan API</h2>
+                        <p class="section-subtitle">Best practices untuk integrasi yang optimal</p>
+                    </div>
+                    <div class="section-content">
+                        <div class="tips-grid">
+                            <div class="tip-item">
+                                <i class="fas fa-key tip-icon"></i>
+                                <div>
+                                    <h4 style="margin-bottom: 0.5rem; color: var(--dark);">Autentikasi</h4>
+                                    <p style="color: var(--gray); font-size: 0.95rem;">Selalu sertakan API Key di header setiap request. Simpan API Key di environment variable untuk keamanan.</p>
+                                </div>
+                            </div>
+                            <div class="tip-item">
+                                <i class="fas fa-eye tip-icon"></i>
+                                <div>
+                                    <h4 style="margin-bottom: 0.5rem; color: var(--dark);">GET untuk Membaca</h4>
+                                    <p style="color: var(--gray); font-size: 0.95rem;">Gunakan metode GET hanya untuk membaca data. Request GET tidak boleh mengubah data di server.</p>
+                                </div>
+                            </div>
+                            <div class="tip-item">
+                                <i class="fas fa-plus tip-icon"></i>
+                                <div>
+                                    <h4 style="margin-bottom: 0.5rem; color: var(--dark);">POST untuk Menambah</h4>
+                                    <p style="color: var(--gray); font-size: 0.95rem;">Gunakan POST untuk menambahkan data baru. Pastikan data yang dikirim lengkap dan valid.</p>
+                                </div>
+                            </div>
+                            <div class="tip-item">
+                                <i class="fas fa-sync-alt tip-icon"></i>
+                                <div>
+                                    <h4 style="margin-bottom: 0.5rem; color: var(--dark);">PUT untuk Mengubah</h4>
+                                    <p style="color: var(--gray); font-size: 0.95rem;">Gunakan PUT untuk memperbarui data yang sudah ada. Sertakan semua field, bukan hanya yang berubah.</p>
+                                </div>
+                            </div>
+                            <div class="tip-item">
+                                <i class="fas fa-trash tip-icon"></i>
+                                <div>
+                                    <h4 style="margin-bottom: 0.5rem; color: var(--dark);">Hati-hati dengan DELETE</h4>
+                                    <p style="color: var(--gray); font-size: 0.95rem;">Operasi DELETE bersifat permanen. Implementasikan konfirmasi sebelum menghapus data.</p>
+                                </div>
+                            </div>
+                            <div class="tip-item">
+                                <i class="fas fa-check-circle tip-icon"></i>
+                                <div>
+                                    <h4 style="margin-bottom: 0.5rem; color: var(--dark);">Response Codes</h4>
+                                    <p style="color: var(--gray); font-size: 0.95rem;">Periksa kode response: 200 (sukses), 400 (client error), 401 (unauthorized), 500 (server error).</p>
+                                </div>
+                            </div>
+                            <div class="tip-item">
+                                <i class="fas fa-check-double tip-icon"></i>
+                                <div>
+                                    <h4 style="margin-bottom: 0.5rem; color: var(--dark);">Validasi Data</h4>
+                                    <p style="color: var(--gray); font-size: 0.95rem;">Validasi data sebelum mengirim request. Pastikan tipe data dan format sesuai dengan dokumentasi.</p>
+                                </div>
+                            </div>
+                            <div class="tip-item">
+                                <i class="fas fa-bug tip-icon"></i>
+                                <div>
+                                    <h4 style="margin-bottom: 0.5rem; color: var(--dark);">Error Handling</h4>
+                                    <p style="color: var(--gray); font-size: 0.95rem;">Implementasikan error handling yang baik pada aplikasi client untuk menangani berbagai skenario.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </main>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-info">
+                    <h3 class="footer-title">
+                        <i class="fas fa-graduation-cap"></i>
+                        REST API Sekolah
+                    </h3>
+                    <p class="footer-text">
+                        Dokumentasi lengkap untuk integrasi sistem manajemen data sekolah. API ini menyediakan akses terstruktur dan aman untuk mengelola data akademik, siswa, guru, dan kelas.
+                    </p>
+                    <div class="footer-meta">
+                        <div class="meta-item">
+                            <i class="fas fa-server"></i>
+                            <span>Server: 103.186.167.18:8000</span>
+                        </div>
+                        <div class="meta-item">
+                            <i class="fas fa-code"></i>
+                            <span>Base URL: /serverapikel5rpl1key/api/</span>
+                        </div>
+                        <div class="meta-item">
+                            <i class="fas fa-shield-alt"></i>
+                            <span>API Key Authentication</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div style="margin-top: 3rem; padding-top: 2rem; border-top: 1px solid #374151; text-align: center; color: #9ca3af; font-size: 0.9rem;">
+                <p>Dokumentasi REST API Sekolah &copy; 2023 | Dibuat dengan <i class="fas fa-heart" style="color: #ef4444;"></i> untuk kemudahan integrasi sistem</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href');
+                const targetElement = document.querySelector(targetId);
+                
+                if (targetElement) {
+                    // Update active nav link
+                    document.querySelectorAll('.nav-link').forEach(item => {
+                        item.classList.remove('active');
+                    });
+                    this.classList.add('active');
+                    
+                    // Scroll to section
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 100,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+
+        // Update active nav link on scroll
+        window.addEventListener('scroll', () => {
+            const sections = document.querySelectorAll('.section-card');
+            const navLinks = document.querySelectorAll('.nav-link');
+            
+            let current = '';
+            
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                const sectionHeight = section.clientHeight;
+                
+                if (window.scrollY >= sectionTop - 150) {
+                    current = section.getAttribute('id');
+                }
+            });
+            
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === `#${current}`) {
+                    link.classList.add('active');
+                }
+            });
+        });
+
+        // Add animation to elements on scroll
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('animate-in');
+                }
+            });
+        }, observerOptions);
+
+        // Observe all section cards and method cards
+        document.querySelectorAll('.section-card, .method-card, .info-card, .tip-item').forEach(element => {
+            observer.observe(element);
+        });
+
+        // Add loading animation for images
+        document.querySelectorAll('img').forEach(img => {
+            img.addEventListener('load', function() {
+                this.style.opacity = '1';
+                this.style.transition = 'opacity 0.3s ease';
+            });
+            img.style.opacity = '0';
+        });
+    </script>
+</body>
+</html>
