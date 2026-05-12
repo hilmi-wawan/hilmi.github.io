@@ -1,8 +1,8 @@
 body {
-  min-height: 3000px;
+  min-height: auto;
 }
 .jumbotron {
-  padding-top: 5rem;
+  padding: 2rem 0 1rem;
   background-color: #cfdff8;
 }
 
@@ -10,5 +10,40 @@ body {
   background-color: #cfdff8;
 }
 section {
-  padding-top: 5rem;
+  padding: 1rem 0;
+}
+
+#projects .card {
+  height: auto !important;
+  max-width: 420px;
+  display: flex !important;
+  flex-direction: column !important;
+  margin: 0 auto;
+}
+
+#projects .card-img-top {
+  height: 220px !important;
+  object-fit: cover !important;
+}
+
+#projects .card-body {
+  flex-grow: 0;
+  display: flex;
+  flex-direction: column;
+  padding: 1rem 1rem 0.75rem;
+}
+
+#projects .card-text {
+  flex-grow: 0;
+  margin: 0 0 0.25rem;
+}
+
+#projects .card-title {
+  margin-bottom: 0.25rem;
+}
+
+#projects .card .btn {
+  margin-top: 0;
+  margin-bottom: 0;
+  padding: 0.65rem 1rem;
 }
